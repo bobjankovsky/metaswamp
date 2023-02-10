@@ -1,4 +1,7 @@
-function treat_template(p_metadata clob, p_template clob) return clob is
+function treat_template(
+   p_metadata clob  -- metadata of the generated code
+  ,p_template clob  -- template of the generation pattern 
+) return clob is
 -- a generic function for using templates based on json parametrization
   v_jobj     json_object_t := json_object_t(p_metadata); -- json object of parameters
   v_keys     json_key_list := v_jobj.get_keys;         -- list of keys in parameters
