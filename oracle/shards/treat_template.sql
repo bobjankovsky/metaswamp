@@ -63,7 +63,7 @@ function treat_template(
     end loop;
   end do_array;
 begin
-  for i in 1 .. v_keys.count loop     -- loop over all keys in the template
+  for i in 1 .. v_keys.count loop     -- loop over all keys in metadata
     v_key  := v_keys(i);              -- key
     v_elem := v_jobj.get(v_keys(i));  -- element
     if v_elem.is_array then           -- is either an array
