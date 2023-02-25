@@ -20,7 +20,8 @@ declare -- a generic function for using templates based on json parametrization
   v_is       boolean;              -- result of condition in conditioned arrays
 begin 
   for r_elem in (select * from jsonb_each(v_metadata)) loop -- loop over all elements of metadata
-    if jsonb_typeof(r_elem.value) = 'array' then       -- is either an array
+    if jsonb_typeof(r_elem.value) = 'array' then       
+	  --do_array
       for r_arr in (select t[1] as lmask, t[2] as content from regexp_matches(v_stmt,format('(\{%s\:\[([^]]*)\]\})',r_elem.key),'g') t) loop
 		v_delim := regexp_substr(r_arr.content,'^([^|]+)\|',1,1,'i',1); 
 		v_cond  := regexp_substr(r_arr.content,'\?([^?]+)$',1,1,'i',1); 
@@ -50,8 +51,10 @@ begin
             v_del := v_delim;                                                                   -- delim for each other column
 		  end if;
         end loop;
+		--/do_join
 		v_stmt := replace(v_stmt, r_arr.lmask, v_joinres); 
       end loop;		
+      --/do_array
     elsif jsonb_typeof(r_elem.value) = 'string' then       -- or standard string
        v_stmt := replace(v_stmt, '{'||r_elem.key||'}',(r_elem.value) #>> '{}'); -- the only place atomic elements are replaced
     end if;
