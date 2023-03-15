@@ -23,7 +23,7 @@ create or replace function get_population_mapping(
     ,"'||c_seq_key_flag||'"     :"_KEY$"
    }'; 
 --derrived flag
-   c_diffhash_flag     Varchar2(50 CHAR):='ColDiffHash_flag';        -- flag of columns relevant to comparison of record difference
+   c_diffhash_flag     Varchar2(50 CHAR):='ColDiffHashFlag';        -- flag of columns relevant to comparison of record difference
    c_logical_key_flag  Varchar2(50 CHAR):='ColScdKeyFlag';       -- flag of logical key (auxiliary history columns are omited
    c_key_flag          Varchar2(50 CHAR):='ColKeyFlag';              -- flag of relevant (natural) key
    c_ins_flag          Varchar2(50 CHAR):='ColInsFlag';              -- flag of columns that should be inserted into new record 
