@@ -53,8 +53,6 @@ create or replace function get_population_mapping(
    v_col  json_object_t;
    v_def      json_object_t := json_object_t(c_auxiliary_detect); -- definition of auxiliary columns
    v_def_keys json_key_list := v_def.get_keys;                    -- list of auxiliary flags
---result
-   v_res               CLOB;               
 --isflag
    function is_flag(p_flag varchar2) return boolean is
    begin
