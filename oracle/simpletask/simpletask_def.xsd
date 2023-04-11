@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:element name="WORKFLOW">
+<xs:annotation>
+<xs:documentation>Deployment unit of the Heap Workflow</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence maxOccurs="unbounded">
+<xs:element name="PROCESSES" minOccurs="0">
+<xs:complexType>
+<xs:sequence maxOccurs="unbounded">
+<xs:element name="PROCESS" type="PROCESS_TYPE" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="FULL" type="flagType"/>
+</xs:complexType>
+</xs:element>
+<xs:element name="RESOURCES" minOccurs="0">
+<xs:complexType>
+<xs:sequence maxOccurs="unbounded">
+<xs:element name="RESOURCE" maxOccurs="unbounded">
+<xs:complexType>
+<xs:attribute name="ID" type="idType" use="required"/>
+<xs:attribute name="NOTE" type="noteType"/>
+<xs:attribute name="TYPE" default="STANDARD">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:enumeration value="STANDARD"/>
+<xs:enumeration value="CUMULATIVE"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="AMOUNT" type="xs:float" use="required"/>
+<xs:attribute name="DELETE" type="flagType"/>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="FULL" type="flagType"/>
+</xs:complexType>
+</xs:element>
+<xs:element name="FAILOVER" minOccurs="0">
+<xs:complexType>
+<xs:sequence maxOccurs="unbounded">
+<xs:element name="ERROR" maxOccurs="unbounded">
+<xs:complexType>
+<xs:attribute name="CODE" type="idType" use="required"/>
+<xs:attribute name="ATTEMPTS" type="xs:integer" use="required"/>
+<xs:attribute name="DELAY" type="xs:float" use="required"/>
+<xs:attribute name="INCREASE" type="xs:float" use="required"/>
+<xs:attribute name="DIVERSITY" type="xs:unsignedByte" use="required"/>
+<xs:attribute name="DELETE" type="flagType"/>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="FULL" type="flagType"/>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="TAG">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:maxLength value="100"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="NOTE" type="xs:string"/>
+</xs:complexType>
+</xs:element>
+<xs:complexType name="PREDECESSOR_TYPE">
+<xs:annotation>
+<xs:documentation>Identifies predecessor of task or process</xs:documentation>
+</xs:annotation>
+<xs:attribute name="ID" type="idType" use="required"/>
+<xs:attribute name="TYPE" default="CURRENT">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:enumeration value="CURRENT"/>
+<xs:enumeration value="NONE"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="HEAP" type="idType"/>
+<xs:attribute name="DELETE" type="flagType"/>
+</xs:complexType>
+<xs:complexType name="CONSUMPTION_TYPE">
+<xs:annotation>
+<xs:documentation>Identifies resource and defines it's consumption by task or process</xs:documentation>
+</xs:annotation>
+<xs:attribute name="ID" use="required">
+<xs:simpleType>
+<xs:restriction base="idType">
+<xs:maxLength value="100"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="AMOUNT" type="xs:float" use="required"/>
+<xs:attribute name="DELETE" type="flagType"/>
+</xs:complexType>
+<xs:complexType name="PROCESS_TYPE">
+<xs:annotation>
+<xs:documentation>Specifies Heap of other hierarchical processes</xs:documentation>
+</xs:annotation>
+<xs:sequence minOccurs="0" maxOccurs="unbounded">
+<xs:element name="TASKS" minOccurs="0">
+<xs:complexType>
+<xs:sequence maxOccurs="unbounded">
+<xs:element name="TASK" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence minOccurs="0">
+<xs:element name="PREDECESSORS" minOccurs="0">
+<xs:complexType>
+<xs:sequence maxOccurs="unbounded">
+<xs:element name="PREDECESSOR" type="PREDECESSOR_TYPE" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="CONSUMPTIONS" minOccurs="0">
+<xs:complexType>
+<xs:sequence maxOccurs="unbounded">
+<xs:element name="CONSUMPTION" type="CONSUMPTION_TYPE" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:string" use="required"/>
+<xs:attribute name="NOTE" type="noteType"/>
+<xs:attribute name="EXEC_COND" type="codeType"/>
+<xs:attribute name="EXEC_FLAG" type="flagType"/>
+<xs:attribute name="SKIP_COND" type="codeType"/>
+<xs:attribute name="SKIP_FLAG" type="flagType"/>
+<xs:attribute name="PRIORITY" type="xs:float"/>
+<xs:attribute name="EXEC_CODE" type="codeType" use="required"/>
+<xs:attribute name="FULL" type="flagType"/>
+<xs:attribute name="DELETE" type="flagType"/>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="FULL" type="flagType"/>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="ID" type="idType" use="required"/>
+<xs:attribute name="NOTE" type="noteType"/>
+<xs:attribute name="ISHEAP" type="flagType"/>
+<xs:attribute name="DELETE" type="flagType"/>
+</xs:complexType>
+<xs:simpleType name="flagType">
+<xs:annotation>
+<xs:documentation>Flag yes/no</xs:documentation>
+</xs:annotation>
+<xs:restriction base="xs:string">
+<xs:enumeration value="Y"/>
+<xs:enumeration value="N"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="idType">
+<xs:annotation>
+<xs:documentation>Identifier of Simpletask object</xs:documentation>
+</xs:annotation>
+<xs:restriction base="xs:string">
+<xs:maxLength value="100"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="noteType">
+<xs:annotation>
+<xs:documentation>Note in Simpletask</xs:documentation>
+</xs:annotation>
+<xs:restriction base="xs:string">
+<xs:maxLength value="500"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="codeType">
+<xs:annotation>
+<xs:documentation>Code text in simpletask</xs:documentation>
+</xs:annotation>
+<xs:restriction base="xs:string">
+<xs:maxLength value="2000"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
